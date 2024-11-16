@@ -81,6 +81,9 @@ class ConvNet(nn.Module):
         # Output layer
         x = self.fc3(x)
 
+        # Apply softmax activation
+        x = F.softmax(x, dim=1)
+
         return x
 
     # Task 2 feed-forward function
@@ -111,6 +114,9 @@ class ConvNet(nn.Module):
 
         # Output layer
         x = self.fc3(x)
+
+        # Apply softmax activation
+        x = F.softmax(x, dim=1)
 
         return x
 
