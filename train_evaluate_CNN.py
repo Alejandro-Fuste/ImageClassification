@@ -235,12 +235,12 @@ if __name__ == '__main__':
                         help='Initial learning rate.')
     parser.add_argument('--num_epochs',
                         type=int,
-                        default=1,
-                        # default=30,
+                        # default=1,
+                        default=30,
                         help='Number of epochs to run trainer.')
     parser.add_argument('--batch_size',
-                        type=int, default=1,
-                        # type=int, default=10,
+                        # type=int, default=1,
+                        type=int, default=10,
                         help='Batch size. Must divide evenly into the dataset sizes.')
     parser.add_argument('--log_dir',
                         type=str,
