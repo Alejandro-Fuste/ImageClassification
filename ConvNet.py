@@ -62,19 +62,19 @@ class ConvNet(nn.Module):
 
         # Convolution + Pooling + Activation
         x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
-        print("Shape after conv1 and pool:", x.shape)
+        # print("Shape after conv1 and pool:", x.shape)
 
         # Convolution + Pooling + Activation
         x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
-        print("Shape after conv2 and pool:", x.shape)
+        # print("Shape after conv2 and pool:", x.shape)
 
         # Convolution + Pooling + Activation
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
-        print("Shape after conv3 and pool:", x.shape)
+        # print("Shape after conv3 and pool:", x.shape)
 
         # Flatten the input
         x = x.view(-1, self.flatten_features(x))
-        print("Shape after flatten:", x.shape)
+        # print("Shape after flatten:", x.shape)
 
         # Apply dropout to first fully-connected layer
         x = self.dropout(F.relu(self.fc1(x)))
