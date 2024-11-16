@@ -1,18 +1,22 @@
 from __future__ import print_function
-import argparse
-import os
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
-from torch.utils.tensorboard import SummaryWriter
 from ConvNet import ConvNet
 import argparse
 import numpy as np
+import matplotlib.pyplot as plt
+
+# Initialize lists to store loss and accuracy values for plotting
+train_losses = []
+test_losses = []
+train_accuracies = []
+test_accuracies = []
 
 
+# Training function
 def train(model, device, train_loader, optimizer, criterion, epoch, batch_size):
     '''
     Trains the model for an epoch and optimizes it.
@@ -78,6 +82,7 @@ def train(model, device, train_loader, optimizer, criterion, epoch, batch_size):
     return train_loss, train_acc
 
 
+# Testing function
 def test(model, device, test_loader, criterion):
     '''
     Tests the model.
@@ -131,6 +136,33 @@ def test(model, device, test_loader, criterion):
     return test_loss, accuracy
 
 
+# Plotting function
+def plot_metrics():
+    epochs = range(1, len(train_losses) + 1)
+
+    plt.figure(figsize=(12, 5))
+    # Plot training and testing loss
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, train_losses, label='Training Loss')
+    plt.plot(epochs, test_losses, label='Testing Loss')
+    plt.title('Loss vs Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+
+    # Plot training and testing accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, train_accuracies, label='Training Accuracy')
+    plt.plot(epochs, test_accuracies, label='Testing Accuracy')
+    plt.title('Accuracy vs Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+
 def run_main(FLAGS):
     # Check if cuda is available
     use_cuda = torch.cuda.is_available()
@@ -144,16 +176,10 @@ def run_main(FLAGS):
 
     # ======================================================================
     # Define loss function.
-    # ----------------- YOUR CODE HERE ----------------------
-    #
-    # Remove NotImplementedError and assign correct loss function.
     criterion = nn.CrossEntropyLoss()
 
     # ======================================================================
     # Define optimizer function.
-    # ----------------- YOUR CODE HERE ----------------------
-    #
-    # Remove NotImplementedError and assign appropriate optimizer with learning rate and other parameters.
     optimizer = optim.SGD(model.parameters(), lr=FLAGS.learning_rate)
 
     # Create transformations to apply to each data sample
@@ -185,6 +211,8 @@ def run_main(FLAGS):
         if test_accuracy > best_accuracy:
             best_accuracy = test_accuracy
 
+    plot_metrics()
+
     # Save the accuracy to output.txt file
     with open("output.txt", "a") as f:
         f.write(f"Best accuracy: {best_accuracy:.2f}\n")
@@ -207,10 +235,12 @@ if __name__ == '__main__':
                         help='Initial learning rate.')
     parser.add_argument('--num_epochs',
                         type=int,
-                        default=30,
+                        default=1,
+                        # default=30,
                         help='Number of epochs to run trainer.')
     parser.add_argument('--batch_size',
-                        type=int, default=10,
+                        type=int, default=1,
+                        # type=int, default=10,
                         help='Batch size. Must divide evenly into the dataset sizes.')
     parser.add_argument('--log_dir',
                         type=str,
