@@ -29,7 +29,7 @@ class ConvNet(nn.Module):
 
         # 2 fully connected layers
         self.fc1 = nn.Linear(32 * 3 * 3, 1000)  # task 1
-        self.fc1 = nn.Linear(32 * 1 * 1, 1000)  # task 2
+        # self.fc1 = nn.Linear(32 * 1 * 1, 1000)  # task 2
         self.fc2 = nn.Linear(1000, 1000)
 
         # output layer
